@@ -1,4 +1,4 @@
-package se.tronhage.webserviceslabb2.model.io;
+package se.tronhage.webserviceslabb2.io;
 
 import java.util.Scanner;
 
