@@ -39,4 +39,35 @@ public class PersonServiceClient {
 
         return personFlux.collectList().block();
     }
+
+    public List<Person> searchId(Long id){
+        Flux<Person> personFlux = client
+                .get()
+                .uri("/rs/search/id/{id}", id)
+                .retrieve()
+                .bodyToFlux(Person.class);
+
+        return personFlux.collectList().block();
+    }
+
+    public List<Person> searchAge(int age){
+        Flux<Person> personFlux = client
+                .get()
+                .uri("/rs/search/age/{age}", age)
+                .retrieve()
+                .bodyToFlux(Person.class);
+
+        return personFlux.collectList().block();
+    }
+
+    public List<Person> searchCity(String city){
+        Flux<Person> personFlux = client
+                .get()
+                .uri("/rs/search/city/{city}", city)
+                .retrieve()
+                .bodyToFlux(Person.class);
+
+        return personFlux.collectList().block();
+    }
+
 }
