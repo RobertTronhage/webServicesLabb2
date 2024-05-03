@@ -28,8 +28,15 @@ public class PersonServiceClient {
                 .bodyToFlux(Person.class);
 
         return personFlux.collectList().block();
-
-
     }
 
+    public List<Person> searchName(String name){
+        Flux<Person> personFlux = client
+                .get()
+                .uri("/rs/search/name/{name}", name)
+                .retrieve()
+                .bodyToFlux(Person.class);
+
+        return personFlux.collectList().block();
+    }
 }

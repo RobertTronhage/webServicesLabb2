@@ -56,7 +56,7 @@ public class ConsoleMenu {
                     0 - Back to main menu
                     1 - Display all persons in database
                     2 - Search by person-number
-                    3 - Search by free text
+                    3 - Search by name
                     4 - Search by age
                     5 - Search by city
                     """);
@@ -73,7 +73,16 @@ public class ConsoleMenu {
                         consoleIO.addString(p.toString());
                     }
                 }
-                case 2 -> consoleIO.addString("fritextsök");
+                case 2 -> {
+                    consoleIO.addString("Enter search:\n");
+                    String searchWord = consoleIO.getString();
+
+                    List<Person> foundPersons = personServiceClient.searchName(searchWord);
+
+                    for (Person p : foundPersons){
+                        consoleIO.addString(p.toString());
+                    }
+                }
                 case 3 -> consoleIO.addString("sök på personnummer");
                 case 4 -> consoleIO.addString("sök på ålder");
                 case 5 -> consoleIO.addString("sök på stad");
