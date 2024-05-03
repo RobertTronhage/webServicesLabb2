@@ -44,7 +44,31 @@ public class ConsoleMenu {
     public void addPerson() {
         int choice = 0;
         do {
-            //Logic to add new person
+            consoleIO.addString("Enter '0' to abort");
+            consoleIO.addString("Enter Person id and press enter:\n");
+            Long id = consoleIO.getValidLongInput(0,Long.MAX_VALUE);
+
+            if (id == 0){
+                break;
+            }
+
+            consoleIO.addString("Enter full name:\n");
+            String name = consoleIO.getString();
+
+            consoleIO.addString("enter age:\n");
+            int age = consoleIO.getValidIntegerInput(0,Integer.MAX_VALUE);
+
+            consoleIO.addString("Enter city:\n");
+            String city = consoleIO.getString();
+
+            Person p = new Person(id,name,age,city);
+
+            personServiceClient.addNewPerson(p);
+
+            consoleIO.addString("Person added successfully");
+
+            consoleIO.addString("Do you want to add another person? Enter '1' for Yes, '0' to abort:");
+            choice = consoleIO.getValidIntegerInput(0, 1);
 
         } while (choice != 0);
     }
