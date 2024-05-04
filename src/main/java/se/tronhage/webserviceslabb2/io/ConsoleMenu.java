@@ -12,7 +12,7 @@ import java.util.List;
 public class ConsoleMenu {
 
     @Autowired
-    ConsoleIO consoleIO;
+    IO io;
 
     @Autowired
     PersonServiceClient personServiceClient;
@@ -21,7 +21,7 @@ public class ConsoleMenu {
         int choice = 0;
 
         do {
-            consoleIO.addString("""
+            io.addString("""
                     choose option:
                     0 - exit application
                     1 - add new person
@@ -29,7 +29,7 @@ public class ConsoleMenu {
                     3 - edit person
                     """);
 
-            choice = consoleIO.getValidIntegerInput(0, 3);
+            choice = io.getValidIntegerInput(0, 3);
 
             switch (choice) {
                 case 0 -> System.exit(0);
@@ -44,31 +44,31 @@ public class ConsoleMenu {
     public void addPerson() {
         int choice = 0;
         do {
-            consoleIO.addString("Enter '0' to abort");
-            consoleIO.addString("Enter Person id and press enter:\n");
-            Long id = consoleIO.getValidLongInput(0,Long.MAX_VALUE);
+            io.addString("Enter '0' to abort");
+            io.addString("Enter Person id and press enter:\n");
+            Long id = io.getValidLongInput(0,Long.MAX_VALUE);
 
             if (id == 0){
                 break;
             }
 
-            consoleIO.addString("Enter full name:\n");
-            String name = consoleIO.getString();
+            io.addString("Enter full name:\n");
+            String name = io.getString();
 
-            consoleIO.addString("enter age:\n");
-            int age = consoleIO.getValidIntegerInput(0,Integer.MAX_VALUE);
+            io.addString("enter age:\n");
+            int age = io.getValidIntegerInput(0,Integer.MAX_VALUE);
 
-            consoleIO.addString("Enter city:\n");
-            String city = consoleIO.getString();
+            io.addString("Enter city:\n");
+            String city = io.getString();
 
             Person p = new Person(id,name,age,city);
 
             personServiceClient.addNewPerson(p);
 
-            consoleIO.addString("Person added successfully");
+            io.addString("Person added successfully");
 
-            consoleIO.addString("Do you want to add another person? Enter '1' for Yes, '0' to abort:");
-            choice = consoleIO.getValidIntegerInput(0, 1);
+            io.addString("Do you want to add another person? Enter '1' for Yes, '0' to abort:");
+            choice = io.getValidIntegerInput(0, 1);
 
         } while (choice != 0);
     }
@@ -76,7 +76,7 @@ public class ConsoleMenu {
     public void displayPersonMenu() {
         int choice = 0;
         do {
-            consoleIO.addString("""
+            io.addString("""
                     choose option:
                     0 - Back to main menu
                     1 - Display all persons in database
@@ -86,7 +86,7 @@ public class ConsoleMenu {
                     5 - Search by city
                     """);
 
-            choice = consoleIO.getValidIntegerInput(0, 5);
+            choice = io.getValidIntegerInput(0, 5);
 
             switch (choice) {
                 case 0 -> {
@@ -95,52 +95,52 @@ public class ConsoleMenu {
                 case 1 -> {
                     List<Person> allPersons = personServiceClient.allPersons();
                     for (Person p : allPersons) {
-                        consoleIO.addString(p.toString());
+                        io.addString(p.toString());
                     }
                 }
                 case 2 -> {
-                    consoleIO.addString("Enter search:\n");
+                    io.addString("Enter search:\n");
 
-                    Long searchId = consoleIO.getValidLongInput(0, Long.MAX_VALUE);
+                    Long searchId = io.getValidLongInput(0, Long.MAX_VALUE);
 
                     List<Person> foundPersons = personServiceClient.searchId(searchId);
 
                     for (Person p : foundPersons) {
-                        consoleIO.addString(p.toString());
+                        io.addString(p.toString());
                     }
                 }
                 case 3 -> {
-                    consoleIO.addString("Enter search:\n");
-                    String searchName = consoleIO.getString();
+                    io.addString("Enter search:\n");
+                    String searchName = io.getString();
 
                     List<Person> foundPersons = personServiceClient.searchName(searchName);
 
                     for (Person p : foundPersons) {
-                        consoleIO.addString(p.toString());
+                        io.addString(p.toString());
                     }
                 }
                 case 4 -> {
-                    consoleIO.addString("Enter search:\n");
-                    int searchAge = consoleIO.getValidIntegerInput(0, Integer.MAX_VALUE);
+                    io.addString("Enter search:\n");
+                    int searchAge = io.getValidIntegerInput(0, Integer.MAX_VALUE);
 
                     try {
                         List<Person> foundPersons = personServiceClient.searchAge(searchAge);
 
                         for (Person p : foundPersons) {
-                            consoleIO.addString(p.toString());
+                            io.addString(p.toString());
                         }
                     } catch (WebClientResponseException.NotFound e) {
-                        consoleIO.addString("no results found\n");
+                        io.addString("no results found\n");
                     }
                 }
                 case 5 -> {
-                    consoleIO.addString("Enter search:\n");
-                    String searchCity = consoleIO.getString();
+                    io.addString("Enter search:\n");
+                    String searchCity = io.getString();
 
                     List<Person> foundPersons = personServiceClient.searchCity(searchCity);
 
                     for (Person p : foundPersons) {
-                        consoleIO.addString(p.toString());
+                        io.addString(p.toString());
                     }
                 }
             }
@@ -151,7 +151,7 @@ public class ConsoleMenu {
     public void editPerson() {
         int choice = 0;
         do {
-            consoleIO.addString("""
+            io.addString("""
                     choose option:
                     0 - exit application
                     1 - Change name
@@ -159,18 +159,22 @@ public class ConsoleMenu {
                     3 - Change city
                     """);
 
-            choice = consoleIO.getValidIntegerInput(0, 3);
+            choice = io.getValidIntegerInput(0, 3);
 
             switch (choice) {
                 case 0 -> {
                     return;
                 }
-                case 1 -> consoleIO.addString("lägga till pers");
-                case 2 -> consoleIO.addString("visa pers");
-                case 3 -> consoleIO.addString("redigera pers");
+                case 1 -> io.addString("lägga till pers");
+                case 2 -> io.addString("visa pers");
+                case 3 -> io.addString("redigera pers");
             }
 
         } while (choice != 0);
+    }
+
+    public void updateName(){
+
     }
 
 

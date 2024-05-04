@@ -13,10 +13,6 @@ import java.util.List;
 
 @Component
 public class PersonServiceClient {
-//                    1 - Display all persons in database
-//                    2 - Search by free text
-//                    3 - Search by age
-//                    4 - Search by city
 
     @Autowired
     IO io;
@@ -87,6 +83,25 @@ public class PersonServiceClient {
                         io.addString("Failed to add person: " + error.getMessage());
                     });
 
+        } catch (Exception e) {
+            io.addString("An error occurred: " + e.getMessage());
+        }
+    }
+
+    public void editPerson(Long id, Person p){
+        try {
+
+            client.put()
+                    .uri("/rs/update/{id}", id)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(BodyInserters.fromValue(p))
+                    .retrieve()
+                    .toBodilessEntity()
+                    .subscribe(response -> {
+                        io.addString("Person with id " + id + " updated successfully");
+                    }, error -> {
+                        io.addString("Failed to update person: " + error.getMessage());
+                    });
         } catch (Exception e) {
             io.addString("An error occurred: " + e.getMessage());
         }
