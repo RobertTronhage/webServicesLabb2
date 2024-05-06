@@ -93,10 +93,7 @@ public class ConsoleMenu {
                     return;
                 }
                 case 1 -> {
-                    List<Person> allPersons = personServiceClient.allPersons();
-                    for (Person p : allPersons) {
-                        io.addString(p.toString());
-                    }
+                    displayAllPersons();
                 }
                 case 2 -> {
                     io.addString("Enter search:\n");
@@ -148,12 +145,51 @@ public class ConsoleMenu {
         } while (choice != 0);
     }
 
+    private void displayAllPersons() {
+        List<Person> allPersons = personServiceClient.allPersons();
+        int index = 1;
+        for (Person p : allPersons) {
+            io.addString(index + ": " + p.toString());
+            index ++;
+        }
+    }
+
+    public Person selectPerson(){
+        int choosePersonByIndex = 0;
+        Person selectedPerson = null;
+        do {
+            displayAllPersons();
+
+            io.addString("Type '0' to abort\n" +
+                    "Choose number of person you want to edit:\n");
+            choosePersonByIndex = io.getValidIntegerInput(0,Integer.MAX_VALUE);
+
+            if (choosePersonByIndex == 0){
+                break;
+            } else {
+                List<Person> allPersons = personServiceClient.allPersons();
+                if (choosePersonByIndex > 0 && choosePersonByIndex <= allPersons.size()){
+                    selectedPerson = allPersons.get(choosePersonByIndex -1);
+                    io.addString("you have selected " + selectedPerson.toString());
+                }else {
+                    io.addString("invalid input choose a valid number or enter 0 to cancel.\n");
+                }
+            }
+
+        } while (selectedPerson == null);
+
+        return selectedPerson;
+    }
+
     public void editPerson() {
         int choice = 0;
         do {
+
+            Person personToEdit = selectPerson();
+
             io.addString("""
                     choose option:
-                    0 - exit application
+                    0 - Back to main menu
                     1 - Change name
                     2 - Change age
                     3 - Change city
@@ -165,16 +201,43 @@ public class ConsoleMenu {
                 case 0 -> {
                     return;
                 }
-                case 1 -> io.addString("lägga till pers");
-                case 2 -> io.addString("visa pers");
-                case 3 -> io.addString("redigera pers");
+                case 1 -> {
+                    updateName(personToEdit);
+                    return;
+                }
+                case 2 -> {
+                    updateAge(personToEdit);
+                    return;
+                }
+                case 3 -> {
+                    updateCity(personToEdit);
+                    return;
+                }
             }
 
         } while (choice != 0);
     }
 
-    public void updateName(){
+    public void updateName(Person p){
 
+        io.addString("choose new name for person:\n");
+        String newName = io.getString();
+        p.setName(newName);
+        personServiceClient.editPerson(p.getId(),p);
+    }
+
+    public void updateAge(Person p){
+        io.addString("choose new age for person:\n");
+        int newAge = io.getValidIntegerInput(0,Integer.MAX_VALUE);
+        p.setAge(newAge);
+        personServiceClient.editPerson(p.getId(),p);
+    }
+
+    public void updateCity(Person p){
+        io.addString("choose new city for person:\n");
+        String newCity = io.getString();
+        p.setCity(newCity);
+        personServiceClient.editPerson(p.getId(),p);
     }
 
 
