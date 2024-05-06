@@ -92,57 +92,63 @@ public class ConsoleMenu {
                 case 0 -> {
                     return;
                 }
-                case 1 -> {
-                    displayAllPersons();
-                }
-                case 2 -> {
-                    io.addString("Enter search:\n");
-
-                    Long searchId = io.getValidLongInput(0, Long.MAX_VALUE);
-
-                    List<Person> foundPersons = personServiceClient.searchId(searchId);
-
-                    for (Person p : foundPersons) {
-                        io.addString(p.toString());
-                    }
-                }
-                case 3 -> {
-                    io.addString("Enter search:\n");
-                    String searchName = io.getString();
-
-                    List<Person> foundPersons = personServiceClient.searchName(searchName);
-
-                    for (Person p : foundPersons) {
-                        io.addString(p.toString());
-                    }
-                }
-                case 4 -> {
-                    io.addString("Enter search:\n");
-                    int searchAge = io.getValidIntegerInput(0, Integer.MAX_VALUE);
-
-                    try {
-                        List<Person> foundPersons = personServiceClient.searchAge(searchAge);
-
-                        for (Person p : foundPersons) {
-                            io.addString(p.toString());
-                        }
-                    } catch (WebClientResponseException.NotFound e) {
-                        io.addString("no results found\n");
-                    }
-                }
-                case 5 -> {
-                    io.addString("Enter search:\n");
-                    String searchCity = io.getString();
-
-                    List<Person> foundPersons = personServiceClient.searchCity(searchCity);
-
-                    for (Person p : foundPersons) {
-                        io.addString(p.toString());
-                    }
-                }
+                case 1 -> displayAllPersons();
+                case 2 -> searchById();
+                case 3 -> searchByName();
+                case 4 -> searchByAge();
+                case 5 -> searchByCity();
             }
 
         } while (choice != 0);
+    }
+
+    private void searchById() {
+        io.addString("Enter search:\n");
+
+        Long searchId = io.getValidLongInput(0, Long.MAX_VALUE);
+
+        List<Person> foundPersons = personServiceClient.searchId(searchId);
+
+        for (Person p : foundPersons) {
+            io.addString(p.toString());
+        }
+    }
+
+    private void searchByName() {
+        io.addString("Enter search:\n");
+        String searchName = io.getString();
+
+        List<Person> foundPersons = personServiceClient.searchName(searchName);
+
+        for (Person p : foundPersons) {
+            io.addString(p.toString());
+        }
+    }
+
+    private void searchByAge() {
+        io.addString("Enter search:\n");
+        int searchAge = io.getValidIntegerInput(0, Integer.MAX_VALUE);
+
+        try {
+            List<Person> foundPersons = personServiceClient.searchAge(searchAge);
+
+            for (Person p : foundPersons) {
+                io.addString(p.toString());
+            }
+        } catch (WebClientResponseException.NotFound e) {
+            io.addString("no results found\n");
+        }
+    }
+
+    private void searchByCity() {
+        io.addString("Enter search:\n");
+        String searchCity = io.getString();
+
+        List<Person> foundPersons = personServiceClient.searchCity(searchCity);
+
+        for (Person p : foundPersons) {
+            io.addString(p.toString());
+        }
     }
 
     private void displayAllPersons() {
