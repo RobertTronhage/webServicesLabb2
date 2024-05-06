@@ -199,9 +199,10 @@ public class ConsoleMenu {
                     1 - Change name
                     2 - Change age
                     3 - Change city
+                    4 - Delete person
                     """);
 
-            choice = io.getValidIntegerInput(0, 3);
+            choice = io.getValidIntegerInput(0, 4);
 
             switch (choice) {
                 case 0 -> {
@@ -217,6 +218,10 @@ public class ConsoleMenu {
                 }
                 case 3 -> {
                     updateCity(personToEdit);
+                    return;
+                }
+                case 4 -> {
+                    deletePerson(personToEdit);
                     return;
                 }
             }
@@ -246,5 +251,15 @@ public class ConsoleMenu {
         personServiceClient.editPerson(p.getId(),p);
     }
 
+    public void deletePerson(Person p){
+        io.addString("are you sure you want to delete " + p.getName() + " from database?\n" +
+                "type '0' to abort, '1' to delete person..");
+        int choice = io.getValidIntegerInput(0,1);
+        if (choice == 0){
+            return;
+        } else {
+            personServiceClient.deletePerson(p.getId(),p);
+        }
+    }
 
 }

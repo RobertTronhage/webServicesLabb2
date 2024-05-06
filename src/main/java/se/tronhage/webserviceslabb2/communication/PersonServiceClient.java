@@ -107,4 +107,20 @@ public class PersonServiceClient {
         }
     }
 
+    public void deletePerson(Long id, Person p){
+        try {
+
+            client.delete()
+                    .uri("/rs/delete/{id}", id)
+                    .retrieve()
+                    .toBodilessEntity()
+                    .subscribe(response -> {
+                        io.addString("Person with id " + id + " deleted");
+                    }, error -> {
+                        io.addString("Failed to delete person: " + error.getMessage());
+                    });
+        } catch (Exception e) {
+            io.addString("An error occurred: " + e.getMessage());
+        }
+    }
 }
